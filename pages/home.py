@@ -1,21 +1,6 @@
 import streamlit as st
 import os
 import base64
-import mysql.connector
-
-try:
-    # Ganti nama database sesuai dengan database Anda
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        dbname="employee_attrition_db",
-        port=3306
-    )
-    print("Koneksi ke database berhasil!")
-    conn.close()
-except mysql.connector.Error as e:
-    print(f"Koneksi gagal: {e}")
 
 def show_home():
     # Atur layout halaman
