@@ -11,7 +11,7 @@ from pages.karyawan_komen import show_karyawan_komen
 from pages.pimpinan_exploration import show_pimpinan_exploration
 
 # Set konfigurasi halaman sebagai perintah pertama
-st.set_page_config(page_title="Streamlit Web App", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Aplikasi Prediksi Retensi Karyawan", layout="wide", initial_sidebar_state="collapsed")
 
 # Tambahkan direktori 'App' ke sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

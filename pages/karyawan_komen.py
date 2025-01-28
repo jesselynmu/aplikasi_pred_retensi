@@ -3,8 +3,6 @@ import os
 import mysql.connector
 import time
 
-
-
 # Fungsi untuk mendapatkan gambar sebagai base64
 def get_image_as_base64(image_path):
     import base64
