@@ -40,6 +40,11 @@ def show_home():
             flex: 1;
         }
 
+        .text-content h1 {
+            color: #264CBE;  /* Warna biru */
+            font-size: 70px; /* Ukuran teks */
+        }
+
         .image-content {
             flex: 1;
             text-align: right;
@@ -199,6 +204,7 @@ def show_home():
         f"""
         <div class="center-content">
             <div class="text-content">
+                <h1>TALENTRA</h1>
                 <p><strong>Aplikasi Prediksi Retensi Karyawan</strong></p>
             </div>
             <div class="image-content">
