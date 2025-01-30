@@ -453,9 +453,40 @@ def show_prediction():
                 buf = io.BytesIO()
                 plt.savefig(buf, format='png', bbox_inches="tight", dpi=100)
                 buf.seek(0)
-                cols = st.columns(2)  # Bagi halaman menjadi 4 kolom
-                with cols[0]:  # Grafik SHAP ditempatkan di kolom pertama
+                # cols = st.columns(2)  # Bagi halaman menjadi 4 kolom
+                # with cols[0]:  # Grafik SHAP ditempatkan di kolom pertama
+                #     st.image(buf, caption="SHAP Waterfall Plot", use_container_width=True)
+
+                # plt.close()
+
+                col1, col2 = st.columns([1.5, 2])  # **Kolom pertama untuk grafik, kolom kedua untuk penjelasan**
+                
+                with col1:
                     st.image(buf, caption="SHAP Waterfall Plot", use_container_width=True)
+
+                with col2:
+                    top_factors = sorted(shap_dict.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+
+                    # Bangun kesimpulan dinamis
+                    summary = " dan ".join(
+                        [f"<b>{factor}</b> dengan kontribusi <b>{'+' if value > 0 else ''}{value:.2f}</b>" for factor, value in top_factors]
+                    )
+
+                    # Kesimpulan Dinamis
+                    st.markdown(
+                        f"""
+                        <div style="text-align: justify; font-family: 'Poppins', sans-serif;">
+                            <h4 style="color:#264CBE; font-size:18px; font-weight:600;">Faktor Utama yang Mempengaruhi Prediksi:</h4>
+                            <p>
+                                Grafik ini menunjukkan bagaimana hasil prediksi dihitung berdasarkan beberapa faktor utama. 
+                                Faktor-faktor yang paling memengaruhi hasil prediksi adalah {summary}. 
+                                Faktor-faktor ini memberikan kontribusi signifikan terhadap hasil akhir prediksi, 
+                                baik dalam meningkatkan maupun menurunkan probabilitas retensi karyawan.
+                            </p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
                 plt.close()
 
@@ -463,27 +494,27 @@ def show_prediction():
                 st.error(f"Error generating SHAP plot: {str(e)}")
                 plt.close()
 
-        generate_shap_plot(X_test_class, explainer_class)
+        generate_shap_plot(X_test_class, explainer_class, shap_dict, predicted_class)
 
-        top_factors = sorted(shap_dict.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+        # top_factors = sorted(shap_dict.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
 
-        # Bangun kesimpulan dinamis
-        summary = " dan ".join(
-            [f"<b>{factor}</b> dengan kontribusi <b>{'+' if value > 0 else ''}{value:.2f}</b>" for factor, value in top_factors]
-        )
+        # # Bangun kesimpulan dinamis
+        # summary = " dan ".join(
+        #     [f"<b>{factor}</b> dengan kontribusi <b>{'+' if value > 0 else ''}{value:.2f}</b>" for factor, value in top_factors]
+        # )
 
-        # Kesimpulan Dinamis
-        st.markdown(
-            f"""
-            <div style="text-align: justify; font-family: 'Poppins', sans-serif;">
-                Grafik ini menunjukkan bagaimana hasil prediksi dihitung berdasarkan beberapa faktor utama. 
-                Faktor-faktor yang paling memengaruhi hasil prediksi adalah {summary}. 
-                Faktor-faktor ini memberikan kontribusi signifikan terhadap hasil akhir prediksi, 
-                baik dalam meningkatkan maupun menurunkan probabilitas retensi karyawan.
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        # # Kesimpulan Dinamis
+        # st.markdown(
+        #     f"""
+        #     <div style="text-align: justify; font-family: 'Poppins', sans-serif;">
+        #         Grafik ini menunjukkan bagaimana hasil prediksi dihitung berdasarkan beberapa faktor utama. 
+        #         Faktor-faktor yang paling memengaruhi hasil prediksi adalah {summary}. 
+        #         Faktor-faktor ini memberikan kontribusi signifikan terhadap hasil akhir prediksi, 
+        #         baik dalam meningkatkan maupun menurunkan probabilitas retensi karyawan.
+        #     </div>
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
         # Footer
     st.markdown(
