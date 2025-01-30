@@ -463,37 +463,40 @@ def show_prediction():
                 
                 with col1:
                     # st.image(buf, caption="SHAP Waterfall Plot", use_container_width=True)    
+                    # Tambahkan CSS styling ke HTML
                     st.markdown(
-                    f"""
-                    <style>
-                        .shap-container {{
-                            display: flex;
-                            justify-content: center;
-                        }}
-                        .shap-image {{
-                            border-radius: 10px; /* Biar sudutnya membulat */
-                            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Shadow */
-                            border: 2px solid #ddd; /* Stroke */
-                            padding: 5px; /* Ruang di dalam border */
-                            background: white; /* Biar keliatan efeknya */
-                            max-width: 100%; /* Biar responsif */
-                        }}
-                        .shap-caption {{
-                            text-align: center;
-                            font-size: 14px;
-                            font-family: 'Poppins', sans-serif;
-                            color: #555;
-                            margin-top: 5px;
-                        }}
-                    </style>
-                    <div class="shap-container">
-                        <img class="shap-image" src="data:image/png;base64,{buf.getvalue().decode('utf-8')}" alt="SHAP Waterfall Plot">
-                    </div>
-                    <p class="shap-caption">SHAP Waterfall Plot</p>
-                    """,
-                    unsafe_allow_html=True
-                )
+                        """
+                        <style>
+                            .shap-container {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-top: 10px;
+                            }
+                            .shap-image {
+                                border-radius: 10px; /* Sudut membulat */
+                                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Shadow */
+                                border: 2px solid #ddd; /* Stroke */
+                                padding: 5px; /* Ruang di dalam border */
+                                background: white; /* Biar keliatan efeknya */
+                                max-width: 100%; /* Biar responsif */
+                            }
+                            .shap-caption {
+                                text-align: center;
+                                font-size: 14px;
+                                font-family: 'Poppins', sans-serif;
+                                color: #555;
+                                margin-top: 5px;
+                            }
+                        </style>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
+                    # Gunakan `st.image()` untuk menampilkan gambar SHAP dari `buf`
+                    st.markdown('<div class="shap-container">', unsafe_allow_html=True)
+                    st.image(buf, caption="SHAP Waterfall Plot", use_container_width=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
 
                 with col2:
                     top_factors = sorted(shap_dict.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
