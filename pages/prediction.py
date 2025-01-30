@@ -428,7 +428,7 @@ def show_prediction():
         plot_placeholder = st.empty()
 
         # Modify the generate_shap_plot function
-        def generate_shap_plot(X_test_class, explainer_class):
+        def generate_shap_plot(X_test_class, explainer_class, shap_dict, predicted_class):
             plt.close('all')
             
             try:
