@@ -135,7 +135,7 @@ def show_login():
             color: white;
             font-family: 'Poppins', sans-serif;
             font-size: 16px;
-            font-weight: 1000;
+            font-weight: 2000;
             border: none;
             border-radius: 5px;
             padding: 10px;
