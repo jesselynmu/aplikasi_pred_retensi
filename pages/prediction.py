@@ -28,7 +28,6 @@ def connect_to_db():
         st.error(f"Koneksi ke database gagal: {e}")
         return None
 
-# Fungsi untuk mendapatkan data karyawan dari database
 def get_employee_data_from_db(employee_id):
     conn = connect_to_db()
     if conn:
@@ -37,7 +36,7 @@ def get_employee_data_from_db(employee_id):
             query = "SELECT * FROM data_employee_db WHERE employee_id = %s"
             cursor.execute(query, (employee_id,))
             result = cursor.fetchone()
-            return result  # Kembalikan data sebagai dictionary jika ditemukan, None jika tidak
+            return result  
         except mysql.connector.Error as e:
             st.error(f"Terjadi kesalahan saat mengakses database: {e}")
             return None
@@ -307,16 +306,14 @@ def show_prediction():
         <h3 style="text-align: center; font-family: 'Poppins', sans-serif;">
             Halaman Prediksi
         </h3>
-        <p style="font-family: 'Poppins', sans-serif;">
-            Masukkan ID Karyawan untuk memulai prediksi.
-        </p>
+
     """, unsafe_allow_html=True
     )
 
-    employee_id = st.text_input("Masukkan ID Karyawan", placeholder="Contoh: EM12345")
+    employee_id = st.text_input("Masukkan ID Karyawan yang ingin dicek", placeholder="Contoh: EM12345")
 
     # Tombol untuk memulai prediksi
-    if st.button("Validasi dan Prediksi"):
+    if st.button("Lihat Hasil Prediksi"):
         if not employee_id:
             st.error("Harap masukkan ID Karyawan terlebih dahulu.")
             return
@@ -328,10 +325,9 @@ def show_prediction():
             return
 
         # Proses data karyawan
-        df = pd.DataFrame([employee_data])  # Ubah dictionary menjadi DataFrame
-        df = process_employee_data(df)  # Proses data
+        df = pd.DataFrame([employee_data])  
+        df = process_employee_data(df)  
 
-        # Kolom yang diharapkan oleh model
         expected_columns_class = class_model.feature_names_
         expected_columns_reg = reg_model.feature_names_
 
@@ -453,11 +449,6 @@ def show_prediction():
                 buf = io.BytesIO()
                 plt.savefig(buf, format='png', bbox_inches="tight", dpi=100)
                 buf.seek(0)
-                # cols = st.columns(2)  # Bagi halaman menjadi 4 kolom
-                # with cols[0]:  # Grafik SHAP ditempatkan di kolom pertama
-                #     st.image(buf, caption="SHAP Waterfall Plot", use_container_width=True)
-
-                # plt.close()
 
                 col1, col2 = st.columns([1.5, 2])  # **Kolom pertama untuk grafik, kolom kedua untuk penjelasan**
                 
@@ -496,27 +487,6 @@ def show_prediction():
 
         generate_shap_plot(X_test_class, explainer_class, shap_dict, predicted_class)
 
-        # top_factors = sorted(shap_dict.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
-
-        # # Bangun kesimpulan dinamis
-        # summary = " dan ".join(
-        #     [f"<b>{factor}</b> dengan kontribusi <b>{'+' if value > 0 else ''}{value:.2f}</b>" for factor, value in top_factors]
-        # )
-
-        # # Kesimpulan Dinamis
-        # st.markdown(
-        #     f"""
-        #     <div style="text-align: justify; font-family: 'Poppins', sans-serif;">
-        #         Grafik ini menunjukkan bagaimana hasil prediksi dihitung berdasarkan beberapa faktor utama. 
-        #         Faktor-faktor yang paling memengaruhi hasil prediksi adalah {summary}. 
-        #         Faktor-faktor ini memberikan kontribusi signifikan terhadap hasil akhir prediksi, 
-        #         baik dalam meningkatkan maupun menurunkan probabilitas retensi karyawan.
-        #     </div>
-        #     """,
-        #     unsafe_allow_html=True
-        # )
-
-        # Footer
     st.markdown(
         """
         <div class="footer">
@@ -527,6 +497,5 @@ def show_prediction():
         unsafe_allow_html=True
     )
 
-# Jalankan fungsi show_prediction
 if __name__ == "__main__":
     show_prediction()

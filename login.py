@@ -168,11 +168,9 @@ def show_login():
         </style>
     """, unsafe_allow_html=True)
         
-    # Input form
     username = st.text_input("Username", placeholder="Masukkan username")
     password = st.text_input("Password", type="password", placeholder="Masukkan password")
-    
-    # Validasi tombol login tetap tidak diubah
+
     if st.button("Login", key="login_button"):
         user = validate_login(username, password)
         if user:
@@ -183,10 +181,9 @@ def show_login():
         else:
             st.error("Username atau password salah.")
     
-    st.markdown('</div>', unsafe_allow_html=True)  # Tutup container
+    st.markdown('</div>', unsafe_allow_html=True) 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Footer
     st.markdown(
         """
         <div class="footer">

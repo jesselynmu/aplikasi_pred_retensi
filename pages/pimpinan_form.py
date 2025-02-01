@@ -81,7 +81,7 @@ def navbar():
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
             <div class="nav-links">
-                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Performance Rate</a>
+                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Penilaian</a>
                 <a href="?page=pimpinan_exploration" class="{ 'active' if st.session_state.page == 'pimpinan_exploration' else '' }">Dashboard</a>
             </div>
             <a class="login-button" href="{login_button_link}">{login_button_text}</a>
@@ -206,7 +206,7 @@ def show_pimpinan_form():
     """
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <h3 style="text-align: center; font-family: 'Poppins', sans-serif;">
-            Form Kinerja Rating Karyawan
+            Form Penilaian Kinerja Rating Karyawan
         </h3>
     """, unsafe_allow_html=True
     )
@@ -220,7 +220,7 @@ def show_pimpinan_form():
 
     # Input Employee ID
     if not st.session_state.employee_id:  # Jika belum ada ID yang tersimpan
-        employee_id = st.text_input("Masukkan Employee ID Karyawan", placeholder="Contoh: 12345")
+        employee_id = st.text_input("Masukkan ID Karyawan yang ingin diisi", placeholder="Contoh: 12345")
 
         # Tombol untuk mencocokkan employee_id
         if st.button("Isi Form"):

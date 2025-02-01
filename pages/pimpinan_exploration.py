@@ -81,7 +81,7 @@ def navbar():
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
             <div class="nav-links">
-                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Performance Rate</a>
+                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Penilaian</a>
                 <a href="?page=pimpinan_exploration" class="{ 'active' if st.session_state.page == 'pimpinan_exploration' else '' }">Dashboard</a>
             </div>
             <a class="login-button" href="{login_button_link}">{login_button_text}</a>

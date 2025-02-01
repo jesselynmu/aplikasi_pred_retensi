@@ -235,7 +235,7 @@ def show_karyawan_form():
 
     # Jika Employee ID sudah disimpan
     if st.session_state.employee_id:
-        st.success(f"Employee ID ditemukan!")
+        st.success(f"ID Karyawan tersebut ditemukan! Silahkan isi form Kepuasan Kerja Anda")
 
         st.markdown(
         """
