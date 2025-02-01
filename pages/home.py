@@ -241,11 +241,13 @@ def show_home():
             <div class="text-content">
                 <h2 class="section-title">Bagian Aplikasi</h2>
                 <p style="text-align: justify;">
-                    Aplikasi ini dirancang untuk mendukung prediksi retensi karyawan dan pengelolaan data dengan fitur-fitur yang terstruktur berdasarkan peran pengguna. 
-                    Halaman login menjadi pintu masuk utama untuk autentikasi, setelah itu pengguna diarahkan ke halaman sesuai perannya: admin, karyawan, atau pimpinan.
-                    Admin memiliki akses ke halaman prediksi untuk analisis data, dashboard untuk memantau statistik, dan halaman laporan untuk melihat detail data. 
-                    Karyawan dapat mengisi form kepuasan kerja untuk memberikan umpan balik terkait pengalaman mereka. 
-                    Sementara itu, pimpinan dapat menggunakan dashboard untuk melihat data strategis serta mengisi form penilaian kinerja guna mengevaluasi performa karyawan. 
+                    Aplikasi ini dirancang untuk mendukung prediksi retensi karyawan dan pengelolaan data 
+                    dengan fitur-fitur yang terstruktur berdasarkan peran pengguna. 
+                    Dimulai dari Halaman Utama, pengguna diarahkan ke Halaman Login, 
+                    yang kemudian membagi akses berdasarkan peran: Admin, Karyawan, dan Pimpinan. 
+                    Admin memiliki akses ke Halaman Prediksi, Halaman Dashboard, dan Halaman Laporan untuk mengelola data dan analisis. 
+                    Karyawan dapat mengisi Form Kepuasan Kerja dan Form Komplain untuk memberikan feedback dan keluhan. 
+                    Pimpinan memiliki akses ke Form Penilaian untuk evaluasi serta Halaman Dashboard untuk melihat data yang relevan.
                     Aplikasi ini dirancang untuk mempermudah pengelolaan dan pengambilan keputusan berbasis data.
                 </p>
             </div>
@@ -254,7 +256,6 @@ def show_home():
         unsafe_allow_html=True
     )
 
-    # Berita dan Informasi
     st.markdown(
         f"""
         <div class="news-section">
@@ -274,7 +275,6 @@ def show_home():
         unsafe_allow_html=True
     )
 
-    # Footer
     st.markdown(
         """
         <div class="footer">
@@ -285,13 +285,10 @@ def show_home():
         unsafe_allow_html=True
     )
 
-
 def get_image_as_base64(image_path):
     import base64
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode("utf-8")
 
-
-# Jalankan aplikasi
 if __name__ == "__main__":
     show_home()

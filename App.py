@@ -10,17 +10,13 @@ from pages.exploration import show_exploration
 from pages.karyawan_komen import show_karyawan_komen
 from pages.pimpinan_exploration import show_pimpinan_exploration
 
-# Set konfigurasi halaman sebagai perintah pertama
-st.set_page_config(page_title="Aplikasi Prediksi Retensi Karyawan", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="TALENTRA", layout="wide", initial_sidebar_state="collapsed")
 
-# Tambahkan direktori 'App' ke sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# Import halaman dari folder pages
 import pages as pg
 
-# Import halaman dari root directory
-from login import show_login  # Impor dari file login.py di root directory
+from login import show_login  
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 logo_path = os.path.join(parent_dir, "asset/logo.png")
@@ -51,7 +47,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# CSS untuk mengubah warna latar belakang
 background_style = """
     <style>
     .stApp {
@@ -84,7 +79,6 @@ if "page" not in st.session_state:
     else:
         st.session_state.page = "Home"
 
-    # Tambahkan validasi login
     if 'logged_in' in st.session_state and st.session_state['logged_in']:
         role = st.session_state.get('role', '').lower()
         role_pages = {
@@ -112,8 +106,7 @@ def get_image_as_base64(image_path):
         return base64.b64encode(img_file.read()).decode("utf-8")
     
 def navbar_with_sidebar_control(pages, options, logo_path):
-    # Kontrol sidebar visibility
-    if not options.get("show_sidebar", True):  # Jika "show_sidebar" = False
+    if not options.get("show_sidebar", True):  
         st.markdown(
             """
             <style>
@@ -125,7 +118,6 @@ def navbar_with_sidebar_control(pages, options, logo_path):
             unsafe_allow_html=True,
         )
 
-    # Render navbar
     navbar_home()
 
 def navbar_home():
@@ -188,7 +180,7 @@ def navbar_home():
             </div>
             <div class="nav-links">
                 <!-- Ganti teks "Home" dengan teks statis -->
-                <span class="welcome-text">Selamat Datang di Aplikasi Prediksi Retensi Karyawan</span>
+                <span class="welcome-text">Selamat Datang di TALENTRA</span>
             </div>
             <a class="login-button" href="?page=Login">Login</a>
         </div>
@@ -196,13 +188,11 @@ def navbar_home():
         unsafe_allow_html=True,
     )
 
-# Atur Navbar dengan kontrol sidebar
 options = {
     "show_menu": False,
-    "show_sidebar": False,  # Ubah ke True jika ingin menampilkan sidebar
+    "show_sidebar": False,  
 }
 
-# Atur Navbar dengan kontrol sidebar hanya untuk Home
 if st.session_state.page == "Home":
     navbar_with_sidebar_control(
         pages=["Home", "Login"],
@@ -210,24 +200,21 @@ if st.session_state.page == "Home":
         logo_path=logo_path,
     )
 
-
-# Deklarasi fungsi halaman
 functions = {
     "Home": pg.show_home,  
-    "Login": show_login,  # Panggil fungsi show_login dari root directory
-    "admin": show_prediction,  # Pastikan fungsi ini diimpor dan didefinisikan
-    "karyawan_form": show_karyawan_form,  # Pastikan fungsi ini diimpor dan didefinisikan
+    "Login": show_login,  
+    "admin": show_prediction,  
+    "karyawan_form": show_karyawan_form, 
     "pimpinan_form": show_pimpinan_form,
     "exploration": show_exploration,
-    "Prediksi": show_prediction,  # Tambahkan ini
-    "report": show_report,       # Tambahkan ini
+    "Prediksi": show_prediction,  
+    "report": show_report,       
     "karyawan_komen": show_karyawan_komen,
     "pimpinan_exploration": show_pimpinan_exploration
 }
 
 query_params = st.query_params
 
-# Validasi query parameter
 if "page" not in st.session_state:
     query_params = st.query_params
     print("Query parameters (raw):", repr(query_params))  
