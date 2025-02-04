@@ -875,7 +875,7 @@ CREATE TABLE `employee_comments` (
   `id` int(11) NOT NULL,
   `employee_id` varchar(50) NOT NULL,
   `comment` text NOT NULL,
-  `created_at` datetime DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -963,7 +963,7 @@ CREATE TABLE `history_prediction` (
   `hasil_prediksi_klasifikasi` varchar(50) DEFAULT NULL,
   `probabilitas_pred_klasifikasi` decimal(5,2) DEFAULT NULL,
   `hasil_prediksi_regresi` decimal(10,2) DEFAULT NULL,
-  `waktu_prediksi` datetime DEFAULT current_timestamp()
+  `waktu_prediksi` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
