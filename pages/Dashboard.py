@@ -6,24 +6,16 @@ import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# st.set_page_config(page_title="TALENTRA", layout="wide", initial_sidebar_state="collapsed")
+
 # Fungsi untuk mendapatkan gambar sebagai base64
 def get_image_as_base64(image_path):
     import base64
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode("utf-8")
 
-# Fungsi untuk menampilkan navbar
 def navbar():
-    current_page = "exploration"  # Sesuaikan dengan halaman saat ini
-    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")  # Sesuaikan path logo
-
-    # Cek status login
-    if 'logged_in' in st.session_state and st.session_state['logged_in']:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login&logout=true"  # Tambahkan parameter logout
-    else:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login"
+    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
 
     st.markdown(
         f"""
@@ -31,68 +23,143 @@ def navbar():
         .navbar {{
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 10px 20px;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 20px; /* Hilangkan jarak atas */
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
             background-color: #D0EEFF; /* Background navbar */
             border-radius: 15px; /* Membulatkan sudut navbar */
         }}
         .navbar .logo {{
             display: flex;
             align-items: center;
+            gap: 15px;
         }}
         .navbar .logo img {{
             height: 40px;
-            margin-right: 10px;
         }}
-        .navbar .nav-links {{
-            display: flex;
-            gap: 60px;
-        }}
-        .navbar .nav-links a {{
-            color: black;
-            text-decoration: none;
-            font-size: 16px;
+        .navbar .text {{
+            font-size: 18px;
             font-weight: bold;
-        }}
-        .navbar .nav-links a:hover {{
-            color: royalblue;
-        }}
-        .navbar .nav-links a.active {{
-            color: #264CBE; /* Warna saat aktif */
-            text-decoration: underline; /* Garis bawah saat aktif */
-        }}
-        .navbar .login-button {{
-            background-color: #264CBE;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }}
-        .navbar .login-button:hover {{
-            background-color: white;
             color: #264CBE;
         }}
         </style>
         <div class="navbar">
             <div class="logo">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
+                <div class="text">Halaman Dashboard</div>
             </div>
-            <div class="nav-links">
-                <a href="?page=Prediksi" class="{ 'active' if st.session_state.page == 'Prediksi' else '' }">Prediksi</a>
-                <a href="?page=exploration" class="{ 'active' if st.session_state.page == 'exploration' else '' }">Dashboard</a>
-                <a href="?page=report" class="{ 'active' if st.session_state.page == 'report' else '' }">Laporan</a>
-            </div>
-            <a class="login-button" href="{login_button_link}">{login_button_text}</a>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+def menu():
+    # **Pastikan Streamlit Session State Sudah Punya `page`**
+    if "page" not in st.session_state:
+        st.session_state["page"] = "Home"
+
+    current_page = st.session_state["page"]
+    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
+
+    # **Login Check**
+    if 'logged_in' in st.session_state and st.session_state['logged_in']:
+        login_button_text = "Logout"
+    else:
+        login_button_text = "Login"
+
+    # **Gunakan Streamlit Columns agar Navbar Sejajar (4 Kolom)**
+    col2, col3, col4, col5 = st.columns([1.5, 1.5, 1.5, 1]) # 4 Kolom tanpa col1 (logo)
+
+    # **Custom CSS untuk Tombol Navbar yang Spesifik**
+    st.markdown(
+        """
+        <style>
+        /* Tombol di col2 (Prediksi) */
+        div[data-testid="column"]:nth-child(1) button {
+            background-color: #FF5733 !important; /* Warna oranye */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(1) button:hover {
+            background-color: #E64A19 !important; /* Warna oranye lebih gelap saat hover */
+        }
+
+        /* Tombol di col3 (Dashboard) */
+        div[data-testid="column"]:nth-child(2) button {
+            background-color: #33FF57 !important; /* Warna hijau */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(2) button:hover {
+            background-color: #2ECC71 !important; /* Warna hijau lebih gelap saat hover */
+        }
+
+        /* Tombol di col4 (Laporan) */
+        div[data-testid="column"]:nth-child(3) button {
+            background-color: #3357FF !important; /* Warna biru */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(3) button:hover {
+            background-color: #2C3E50 !important; /* Warna biru lebih gelap saat hover */
+        }
+
+        .stButton > button {
+            background-color: #264CBE;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .stButton > button:hover {
+            background-color: #ffffff;
+            color: #264CBE;
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Tombol navigasi dengan warna berbeda di col2, col3, col4
+    with col2:
+        if st.button("Prediksi", key="nav_prediksi"):
+            st.switch_page("pages/Prediksi.py")  # Pindah ke halaman yang sudah ada
+
+    with col3:
+        if st.button("Dashboard", key="nav_dashboard"):
+            st.switch_page("pages/Dashboard.py")  # Pindah ke halaman yang sesuai
+
+    with col4:
+        if st.button("Laporan", key="nav_laporan"):
+            st.switch_page("pages/Laporan.py")  # Pindah ke halaman laporan
+
+    with col5:
+        if st.button(login_button_text, key="login_button"):
+            if 'logged_in' in st.session_state and st.session_state['logged_in']:
+                st.session_state['logged_in'] = False  # Logout user
+            else:
+                st.switch_page("pages/login.py")  # Pindah ke halaman login
 
 def connect_to_db():
     try:
@@ -113,7 +180,7 @@ def get_all_employee_data(filter_employee_id=None, filter_join_date=None):
     if conn:
         try:
             query = """
-            SELECT employee_id AS ID_Karyawan, domisili as Domisili, jenis_kelamin as Jenis_Kelamin, 
+            SELECT employee_id AS ID_Karyawan, Nama, domisili as Domisili, jenis_kelamin as Jenis_Kelamin, 
             join_date as Tanggal_Masuk, resign_date as Tanggal_Keluar, marriage_stat as Status_Pernikahan,
             dependant as Jumlah_Tanggungan, education as Pendidikan, absent_90D as Absen_90Hari, 
             avg_time_work as Rata_Rata_Jam_Kerja, departemen as Departemen, position as Posisi,
@@ -169,13 +236,14 @@ def get_joined_employee_data(filter_employee_id=None):
 
 def show_exploration():
     navbar()
+    menu()
 
     st.markdown("""
         <style>
         .stDownloadButton > button {
             background-color: #264CBE;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 600;
             border: none;
@@ -197,7 +265,7 @@ def show_exploration():
             background-color: #D0EEFF;
             padding: 20px !important;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-radius: 10px;
             margin-top: 50px !important;
         }
@@ -212,10 +280,10 @@ def show_exploration():
 
     st.markdown(
     """
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <h3 style="text-align: center; font-family: 'Poppins', sans-serif;">
-            Halaman Dashboard
-        </h3>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <h4 style="text-align: center; font-family: 'Inter', sans-serif;">
+            Lihat dan Temukan Informasi yang Anda Inginkan
+        </h4>
     """, unsafe_allow_html=True
     )
 
@@ -251,8 +319,8 @@ def show_exploration():
         
         st.markdown(
         """
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-            <h4 style="text-align: center; font-family: 'Poppins', sans-serif;">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+            <h4 style="text-align: center; font-family: 'Inter', sans-serif;">
                 Analisis Visual Distribusi Karyawan
             </h4>
         """, unsafe_allow_html=True
@@ -264,7 +332,7 @@ def show_exploration():
         with col1:
             st.markdown(
             """
-                <h6 style="text-align: center; font-family: 'Poppins', sans-serif;">
+                <h6 style="text-align: center; font-family: 'Inter', sans-serif;">
                     Distribusi Karyawan Berdasarkan Status Pernikahan
                 </h6>
             """, unsafe_allow_html=True
@@ -280,7 +348,7 @@ def show_exploration():
         with col2:
             st.markdown(
             """
-                <h6 style="text-align: center; font-family: 'Poppins', sans-serif;">
+                <h6 style="text-align: center; font-family: 'Inter', sans-serif;">
                     Distribusi Karyawan Berdasarkan Pendidikan
                 </h6>
             """, unsafe_allow_html=True
@@ -298,7 +366,7 @@ def show_exploration():
         with col1:
             st.markdown(
             """
-                <h6 style="text-align: center; font-family: 'Poppins', sans-serif;">
+                <h6 style="text-align: center; font-family: 'Inter', sans-serif;">
                     Distribusi Karyawan Berdasarkan Domisili
                 </h6>
             """, unsafe_allow_html=True
@@ -314,7 +382,7 @@ def show_exploration():
         with col2:
             st.markdown(
             """
-                <h6 style="text-align: center; font-family: 'Poppins', sans-serif;">
+                <h6 style="text-align: center; font-family: 'Inter', sans-serif;">
                     Distribusi Karyawan Berdasarkan Departemen
                 </h6>
             """, unsafe_allow_html=True

@@ -7,45 +7,112 @@ def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode("utf-8")
     
-def navbar():
-    logo_path = os.path.join(os.path.dirname(__file__), "./asset/logo.png")
+st.markdown("""
+    <style>
+    .stButton > button {
+        border-radius: 10px !important;
+        font-weight: bold !important;
+        font-family: 'Inter', sans-serif !important;
+        margin-top: 6px !important;
+    }
+    /* Tombol Home (Kecil dan Biru) */
+    .home-button button {
+        background-color: #264CBE !important; /* Biru */
+        color: white !important;
+        font-size: 12px !important;
+        width: 80px !important;
+        height: 35px !important;
+    }
+    /* Tombol Login (Lebih Panjang dan Warna Berbeda) */
+    .login-button button {
+        background-color: #FFA500 !important; /* Oranye */
+        color: white !important;
+        font-size: 16px !important;
+        width: 100% !important;
+        height: 50px !important;
+    }
+    .login-button button:hover {
+        background-color: white !important;
+        color: #FFA500 !important;
+        border: 2px solid #FFA500 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-    st.markdown(
-        f"""
-        <style>
-        .navbar {{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 20px;
-            background-color: #D0EEFF; /* Background navbar */
-            border-radius: 15px; /* Membulatkan sudut navbar */
-        }}
-        .navbar .logo {{
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }}
-        .navbar .logo img {{
-            height: 40px;
-        }}
-        .navbar .text {{
-            font-size: 18px;
-            font-weight: bold;
-            color: #264CBE;
-        }}
-        </style>
-        <div class="navbar">
-            <div class="logo">
+
+def navbar():
+    current_page = st.session_state["page"]  
+    print("Navbar current page:", repr(current_page))
+    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
+    
+    if current_page == "Home":
+        return  # Tidak perlu menampilkan navbar di Home jika tidak diinginkan
+
+    st.markdown("""
+    <style>
+    .navbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #D0EEFF;
+        border-radius: 15px;
+        padding: 10px 20px;
+        width: 100%;
+    }
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .navbar-left img {
+        height: 40px;
+    }
+    .navbar-center {
+        flex: 1;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        color: #1D567E;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .navbar-right {
+        margin-left: auto;
+    }
+    .stButton > button {
+        background-color: #264CBE !important;
+        color: white !important;
+        border-radius: 10px !important;
+        font-size: 12px !important;
+        font-weight: bold !important;
+        font-family: 'Inter', sans-serif !important;
+        padding: 10px 20px !important;
+        margin-top: 6px !important;
+        width: 100px !important;
+        height: 50px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([11, 1])
+
+    with col1:
+        st.markdown(f"""
+        <div class="navbar-container">
+            <div class="navbar-left">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
-                <div class="text">Silahkan Login ke Akun Anda</div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            <div class="navbar-center">
+                Selamat Datang di TALENTRA
+            </div>
+            <div class="navbar-right">
+        """, unsafe_allow_html=True)
+
+    with col2:
+        if st.button("Kembali", key="home_button"):
+            st.session_state["page"] = "Home"
+            st.rerun()  # Refresh halaman untuk memperbarui state
+
+    st.markdown("</div></div>", unsafe_allow_html=True) 
 
 # Fungsi untuk koneksi ke database
 def connect_to_db():
@@ -79,7 +146,7 @@ def show_login():
     navbar()
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         /* Reset Layout */
         html, body, [data-testid="stAppViewContainer"] {
@@ -87,7 +154,7 @@ def show_login():
             padding: 0;
             height: 100%;
             width: 100%;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         /* Fullscreen Center */
@@ -116,7 +183,7 @@ def show_login():
             color: #333;
             margin-bottom: 20px;
             font-weight: 500;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         /* Input Fields */
@@ -125,7 +192,7 @@ def show_login():
             border: 1px solid #e9ecef;
             padding: 10px;
             border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             width: 100%;
         }
 
@@ -133,7 +200,7 @@ def show_login():
         .stButton > button {
             background-color: #264CBE;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 2000;
             border: none;
@@ -155,7 +222,7 @@ def show_login():
             background-color: #D0EEFF;
             padding: 20px !important;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-radius: 10px;
             margin-top: 50px !important;
         }
@@ -203,11 +270,11 @@ def main():
     if st.session_state['logged_in']:
         role = st.session_state['role']
         if role == 'admin':
-            st.switch_page("pages/prediction.py")
+            st.switch_page("pages/Prediksi.py")
         elif role == 'karyawan':
-            st.switch_page("pages/karyawan_form.py")
+            st.switch_page("pages/Form_Kepuasan.py")
         elif role == 'pimpinan':
-            st.switch_page("pages/pimpinan_form.py")
+            st.switch_page("pages/Form_Penilaian.py")
     else:
         show_login()
 

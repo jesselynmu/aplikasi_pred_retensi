@@ -3,24 +3,16 @@ import os
 import mysql.connector
 import math
 
+# st.set_page_config(page_title="TALENTRA", layout="wide", initial_sidebar_state="collapsed")
+
 # Fungsi untuk mendapatkan gambar sebagai base64
 def get_image_as_base64(image_path):
     import base64
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode("utf-8")
 
-# Fungsi untuk menampilkan navbar
 def navbar():
-    current_page = st.session_state.get("page", "Home")
     logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
-
-    # Cek status login
-    if 'logged_in' in st.session_state and st.session_state['logged_in']:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login&logout=true"  # Tambahkan parameter logout
-    else:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login"
 
     st.markdown(
         f"""
@@ -28,67 +20,138 @@ def navbar():
         .navbar {{
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 10px 20px;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 20px; /* Hilangkan jarak atas */
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
             background-color: #D0EEFF; /* Background navbar */
             border-radius: 15px; /* Membulatkan sudut navbar */
         }}
         .navbar .logo {{
             display: flex;
             align-items: center;
+            gap: 15px;
         }}
         .navbar .logo img {{
             height: 40px;
-            margin-right: 10px;
         }}
-        .navbar .nav-links {{
-            display: flex;
-            gap: 60px;
-        }}
-        .navbar .nav-links a {{
-            color: black;
-            text-decoration: none;
-            font-size: 16px;
+        .navbar .text {{
+            font-size: 18px;
             font-weight: bold;
-        }}
-        .navbar .nav-links a:hover {{
-            color: royalblue;
-        }}
-        .navbar .nav-links a.active {{
-            color: #264CBE; /* Warna saat aktif */
-            text-decoration: underline; /* Garis bawah saat aktif */
-        }}
-        .navbar .login-button {{
-            background-color: #264CBE;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }}
-        .navbar .login-button:hover {{
-            background-color: white;
             color: #264CBE;
         }}
         </style>
         <div class="navbar">
             <div class="logo">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
+                <div class="text">Form Penilaian Kinerja Karyawan</div>
             </div>
-            <div class="nav-links">
-                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Penilaian</a>
-                <a href="?page=pimpinan_exploration" class="{ 'active' if st.session_state.page == 'pimpinan_exploration' else '' }">Dashboard</a>
-            </div>
-            <a class="login-button" href="{login_button_link}">{login_button_text}</a>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+def menu():
+    # **Pastikan Streamlit Session State Sudah Punya `page`**
+    if "page" not in st.session_state:
+        st.session_state["page"] = "Home"
+
+    current_page = st.session_state["page"]
+    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
+
+    # **Login Check**
+    if 'logged_in' in st.session_state and st.session_state['logged_in']:
+        login_button_text = "Logout"
+    else:
+        login_button_text = "Login"
+
+    # **Gunakan Streamlit Columns agar Navbar Sejajar (4 Kolom)**
+    col2, col3, col4 = st.columns([1.5, 1.5, 1])  # 4 Kolom tanpa col1 (logo)
+
+    # **Custom CSS untuk Tombol Navbar yang Spesifik**
+    st.markdown(
+        """
+        <style>
+        /* Tombol di col2 (Prediksi) */
+        div[data-testid="column"]:nth-child(1) button {
+            background-color: #FF5733 !important; /* Warna oranye */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(1) button:hover {
+            background-color: #E64A19 !important; /* Warna oranye lebih gelap saat hover */
+        }
+
+        /* Tombol di col3 (Dashboard) */
+        div[data-testid="column"]:nth-child(2) button {
+            background-color: #33FF57 !important; /* Warna hijau */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(2) button:hover {
+            background-color: #2ECC71 !important; /* Warna hijau lebih gelap saat hover */
+        }
+
+        /* Tombol di col4 (Laporan) */
+        div[data-testid="column"]:nth-child(3) button {
+            background-color: #3357FF !important; /* Warna biru */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(3) button:hover {
+            background-color: #2C3E50 !important; /* Warna biru lebih gelap saat hover */
+        }
+
+        .stButton > button {
+            background-color: #264CBE;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .stButton > button:hover {
+            background-color: #ffffff;
+            color: #264CBE;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Tombol navigasi dengan warna berbeda di col2, col3, col4
+    with col2:
+        if st.button("Form Penilaian", key="nav_prediksi"):
+            st.switch_page("pages/Form_Penilaian.py")  # Pindah ke halaman yang sudah ada
+
+    with col3:
+        if st.button("Dashboard", key="nav_dashboard"):
+            st.switch_page("pages/Dashboard_Pimpinan.py")  # Pindah ke halaman yang sesuai
+
+    with col4:
+        if st.button(login_button_text, key="login_button"):
+            if 'logged_in' in st.session_state and st.session_state['logged_in']:
+                st.session_state['logged_in'] = False  # Logout user
+            else:
+                st.switch_page("pages/login.py")  # Pindah ke halaman login
 
 # Fungsi untuk koneksi ke database
 def connect_to_db():
@@ -105,6 +168,22 @@ def connect_to_db():
         st.error(f"Koneksi ke database gagal: {e}")
         return None
 
+
+def get_employee_id_by_name(employee_name):
+    conn = connect_to_db()
+    if conn:
+        try:
+            cursor = conn.cursor(dictionary=True)
+            query = "SELECT employee_id FROM data_employee_db WHERE Nama = %s LIMIT 1"
+            cursor.execute(query, (employee_name,))
+            result = cursor.fetchone()
+            conn.close()
+            return result["employee_id"] if result else None
+        except mysql.connector.Error as e:
+            st.error(f"Terjadi kesalahan saat mencari Employee ID: {e}")
+            conn.close()
+            return None
+        
 # Fungsi untuk mencocokkan employee_id di database
 def check_employee_in_db(employee_id):
     conn = connect_to_db()
@@ -161,13 +240,14 @@ def save_employee_ratings(employee_id, responses):
 # Fungsi utama untuk form kinerja rating karyawan
 def show_pimpinan_form():
     navbar()
+    menu()
 
     st.markdown("""
         <style>
         .stButton > button {
             background-color: #264CBE;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 600;
             border: none;
@@ -189,7 +269,7 @@ def show_pimpinan_form():
             background-color: #D0EEFF;
             padding: 20px !important;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-radius: 10px;
             margin-top: 50px !important;
         }
@@ -204,52 +284,44 @@ def show_pimpinan_form():
 
     st.markdown(
     """
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <h3 style="text-align: center; font-family: 'Poppins', sans-serif;">
-            Form Penilaian Kinerja Rating Karyawan
-        </h3>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <h4 style="text-align: center; font-family: 'Inter', sans-serif;">
+            Silahkan Isi Form Penilaian Karyawan Anda
+        </h4>
     """, unsafe_allow_html=True
     )
 
-    # Inisialisasi session state
-    if "employee_id" not in st.session_state:
-        st.session_state.employee_id = None  # Awalnya kosong
+        # Inisialisasi session state
+    if "employee_name" not in st.session_state:
+        st.session_state.employee_name = None
 
     if "submit_success" not in st.session_state:
-        st.session_state.submit_success = False  # Awalnya False
+        st.session_state.submit_success = False
 
-    # Input Employee ID
-    if not st.session_state.employee_id:  # Jika belum ada ID yang tersimpan
-        employee_id = st.text_input("Masukkan ID Karyawan yang ingin diisi", placeholder="Contoh: 12345")
+    # Input Nama Karyawan
+    if not st.session_state.employee_name:
+        employee_name = st.text_input("Masukkan Nama Lengkap Karyawan yang ingin diberikan penilaian", placeholder="Contoh: Budi Santoso")
 
-        # Tombol untuk mencocokkan employee_id
         if st.button("Isi Form"):
+            if not employee_name:
+                st.error("Harap masukkan Nama Lengkap Karyawan terlebih dahulu.")
+                return
+
+            # Cari ID berdasarkan nama
+            employee_id = get_employee_id_by_name(employee_name)
             if not employee_id:
-                st.error("Harap masukkan Employee ID terlebih dahulu.")
+                st.error("Nama Karyawan tidak ditemukan di database.")
                 return
 
-            # Cek apakah employee_id ada di database
-            employee_data = check_employee_in_db(employee_id)
-            if not employee_data:
-                st.error("Employee ID tidak ditemukan di database.")
-                return
-
-            # Jika ditemukan, simpan Employee ID di session_state
+            # Simpan Nama dan ID di session_state
+            st.session_state.employee_name = employee_name
             st.session_state.employee_id = employee_id
 
-    # Jika Employee ID sudah disimpan
-    if st.session_state.employee_id:
-        st.success(f"Karyawan_ID ditemukan! Anda sedang mengisi untuk ID: {st.session_state.employee_id}")
+    # Jika Nama sudah ditemukan
+    if st.session_state.employee_name:
+        st.success(f"Karyawan ditemukan! Anda sedang mengisi untuk {st.session_state.employee_name} (ID: {st.session_state.employee_id})")
 
-        # Pertanyaan penilaian (2 kolom)
-        st.markdown(
-        """
-            <h5 style="text-align: center; font-family: 'Poppins', sans-serif;">
-                Isi Form Kinerja Karyawan
-            </h5>
-        """, unsafe_allow_html=True
-        )
-
+        # Pertanyaan penilaian
         questions = [
             "Bagaimana tingkat keandalan karyawan dalam menyelesaikan tugas tepat waktu?",
             "Seberapa efektif karyawan ini dalam bekerja secara mandiri atau dalam tim?",
@@ -263,7 +335,7 @@ def show_pimpinan_form():
 
         options = {"Sangat Buruk": 1, "Cukup Baik": 2, "Baik": 3, "Sangat Baik": 4}
 
-        # Buat dua kolom
+        # Tampilkan pertanyaan dalam dua kolom
         col1, col2 = st.columns(2)
         responses = []
 
@@ -277,18 +349,17 @@ def show_pimpinan_form():
                     response = st.selectbox(question, list(options.keys()), key=f"q{idx}")
                     responses.append(options[response])
 
-
         # Tombol Submit
         if st.button("Submit") and not st.session_state.submit_success:
             final_score = save_employee_ratings(st.session_state.employee_id, responses)
             if final_score is not None:
-                st.session_state.submit_success = True  # Tandai data berhasil disimpan
-                st.success(f"Data berhasil disimpan! Skor Akhir: {final_score} untuk Karyawan_ID: {st.session_state.employee_id}")
+                st.session_state.submit_success = True
+                st.success(f"Data berhasil disimpan! Skor Akhir: {final_score} untuk {st.session_state.employee_name}")
 
     # Jika data berhasil disimpan, tampilkan tombol kembali
     if st.session_state.submit_success:
         if st.button("Kembali ke Form Awal"):
-            # Reset Employee ID dan status submit
+            st.session_state.employee_name = None
             st.session_state.employee_id = None
             st.session_state.submit_success = False
             st.rerun()

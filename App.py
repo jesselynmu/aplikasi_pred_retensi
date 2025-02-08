@@ -2,21 +2,21 @@ import os
 import sys
 import streamlit as st
 
-from pages.karyawan_form import show_karyawan_form
-from pages.pimpinan_form import show_pimpinan_form
-from pages.prediction import show_prediction
-from pages.report import show_report
-from pages.exploration import show_exploration
-from pages.karyawan_komen import show_karyawan_komen
-from pages.pimpinan_exploration import show_pimpinan_exploration
-
 st.set_page_config(page_title="TALENTRA", layout="wide", initial_sidebar_state="collapsed")
+
+from pages.Form_Kepuasan import show_karyawan_form
+from pages.Form_Penilaian import show_pimpinan_form
+from pages.Prediksi import show_prediction
+from pages.Laporan import show_report
+from pages.Dashboard import show_exploration
+from pages.Form_Keluhan import show_karyawan_komen
+from pages.Dashboard_Pimpinan import show_pimpinan_exploration
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import pages as pg
 
-from login import show_login  
+from pages.login import show_login  
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 logo_path = os.path.join(parent_dir, "asset/logo.png")
@@ -126,67 +126,72 @@ def navbar_home():
     if current_page == "Login":
         return
     
-    st.markdown(
-        f"""
-        <style>
-        .navbar {{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 0px; /* Hilangkan jarak atas */
-            background-color: #D0EEFF; /* Background navbar */
-            border-radius: 15px; /* Membulatkan sudut navbar */
-        }}
-        .navbar .logo {{
-            display: flex;
-            align-items: center;
-        }}
-        .navbar .logo img {{
-            height: 40px;
-            margin-right: 10px;
-        }}
-        .navbar .nav-links {{
-            display: flex;
-            align-items: center; /* Pusatkan teks secara vertikal */
-            gap: 60px;
-        }}
-        .navbar .nav-links .welcome-text {{
-            color: #1D567E;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0; /* Hilangkan margin default */
-        }}
-        .navbar .login-button {{
-            background-color: #264CBE;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }}
-        .navbar .login-button:hover {{
-            background-color: white;
-            color: #264CBE;
-        }}
-        </style>
-        <div class="navbar">
-            <div class="logo">
+    st.markdown("""
+    <style>
+    .navbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #D0EEFF;
+        border-radius: 15px;
+        padding: 10px 20px;
+        width: 100%;
+    }
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .navbar-left img {
+        height: 40px;
+    }
+    .navbar-center {
+        flex: 1;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        color: #1D567E;
+        font-size: 18px;
+        font-weight: bold !important;
+    }
+    .navbar-right {
+        margin-left: auto;
+    }
+    .stButton > button {
+    background-color: #264CBE !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-size: 10px !important; /* Membesarkan ukuran teks */\
+    font-weight: bold !important; /* Mengatur ketebalan teks */
+    font-type: 'Inter', sans-serif !important; /* Mengatur jenis font */
+    padding: 10px 20px !important; /* Mengatur padding tombol */
+    margin-top: 6px !important; /* Mengatur jarak atas */
+    width: 100px !important; /* Opsional: Mengatur lebar tombol */
+    height: 50px !important; /* Opsional: Mengatur tinggi tombol */
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([11, 1])
+
+    with col1:
+        st.markdown(f"""
+        <div class="navbar-container">
+            <div class="navbar-left">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
-            <div class="nav-links">
-                <!-- Ganti teks "Home" dengan teks statis -->
-                <span class="welcome-text">Selamat Datang di TALENTRA</span>
+            <div class="navbar-center">
+                Selamat Datang di TALENTRA
             </div>
-            <a class="login-button" href="?page=Login">Login</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            <div class="navbar-right">
+        """, unsafe_allow_html=True)
+
+    with col2:
+        if st.button("Login", key="login_button"):
+            st.session_state["page"] = "Login"
+            st.rerun()
+
+    st.markdown("</div></div>", unsafe_allow_html=True)  # Menutup div navbar
 
 options = {
     "show_menu": False,

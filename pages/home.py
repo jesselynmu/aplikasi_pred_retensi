@@ -33,7 +33,7 @@ def show_home():
         }
 
         .text-content {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 40px;
             font-weight: bold;
             color: #333333;
@@ -63,7 +63,7 @@ def show_home():
             border-radius: 15px;
             margin-top: 50px !important;
             margin-bottom: 50px !important;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -105,7 +105,7 @@ def show_home():
 
         .content-section .text-content {
             flex: 1;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             color: #555555;
             line-height: 1.6;
@@ -121,7 +121,7 @@ def show_home():
 
         .about-section h2,
         .content-section h2 {
-            font-family: 'Poppins', sans-serif; /* Gunakan font Poppins */
+            font-family: 'Inter', sans-serif; /* Gunakan font Inter */
             font-size: 28px;
             font-weight: bold;
             color: #333333;
@@ -129,7 +129,7 @@ def show_home():
         }
         .about-section p,
         .content-section .text-content p {
-            font-family: 'Poppins', sans-serif; /* Gunakan font Poppins */
+            font-family: 'Inter', sans-serif; /* Gunakan font Inter */
             font-size: 16px;
             color: #555555;
             line-height: 1.6;
@@ -138,7 +138,7 @@ def show_home():
         /* Judul Bagian Aplikasi */
         .section-title {
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 28px;
             font-weight: bold;
             color: #333333;
@@ -148,7 +148,7 @@ def show_home():
         /* Berita dan Informasi */
         .news-section {
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin-top: 50px !important;
         }
 
@@ -180,7 +180,7 @@ def show_home():
             background-color: #D0EEFF;
             padding: 20px !important;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-radius: 10px;
             margin-top: 50px !important;
         }
@@ -245,9 +245,10 @@ def show_home():
                     dengan fitur-fitur yang terstruktur berdasarkan peran pengguna. 
                     Dimulai dari Halaman Utama, pengguna diarahkan ke Halaman Login, 
                     yang kemudian membagi akses berdasarkan peran: Admin, Karyawan, dan Pimpinan. 
-                    Admin memiliki akses ke Halaman Prediksi, Halaman Dashboard, dan Halaman Laporan untuk mengelola data dan analisis. 
-                    Karyawan dapat mengisi Form Kepuasan Kerja dan Form Komplain untuk memberikan feedback dan keluhan. 
-                    Pimpinan memiliki akses ke Form Penilaian untuk evaluasi serta Halaman Dashboard untuk melihat data yang relevan.
+                    Akses berdasarkan peran:
+                    Admin: Halaman Prediksi, Dashboard, dan Laporan.
+                    Karyawan: Form Kepuasan Kerja dan Form Komplain.
+                    Pimpinan: Form Penilaian dan Halaman Dashboard.
                     Aplikasi ini dirancang untuk mempermudah pengelolaan dan pengambilan keputusan berbasis data.
                 </p>
             </div>

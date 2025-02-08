@@ -9,18 +9,8 @@ def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode("utf-8")
 
-# Fungsi untuk menampilkan navbar
 def navbar():
-    current_page = st.session_state.get("page", "Home")
     logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
-
-    # Cek status login
-    if 'logged_in' in st.session_state and st.session_state['logged_in']:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login&logout=true"  # Tambahkan parameter logout
-    else:
-        login_button_text = "Logout"
-        login_button_link = "?page=Login"
 
     st.markdown(
         f"""
@@ -28,67 +18,138 @@ def navbar():
         .navbar {{
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 10px 20px;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 20px; /* Hilangkan jarak atas */
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
             background-color: #D0EEFF; /* Background navbar */
             border-radius: 15px; /* Membulatkan sudut navbar */
         }}
         .navbar .logo {{
             display: flex;
             align-items: center;
+            gap: 15px;
         }}
         .navbar .logo img {{
             height: 40px;
-            margin-right: 10px;
         }}
-        .navbar .nav-links {{
-            display: flex;
-            gap: 60px;
-        }}
-        .navbar .nav-links a {{
-            color: black;
-            text-decoration: none;
-            font-size: 16px;
+        .navbar .text {{
+            font-size: 18px;
             font-weight: bold;
-        }}
-        .navbar .nav-links a:hover {{
-            color: royalblue;
-        }}
-        .navbar .nav-links a.active {{
-            color: #264CBE; /* Warna saat aktif */
-            text-decoration: underline; /* Garis bawah saat aktif */
-        }}
-        .navbar .login-button {{
-            background-color: #264CBE;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }}
-        .navbar .login-button:hover {{
-            background-color: white;
             color: #264CBE;
         }}
         </style>
         <div class="navbar">
             <div class="logo">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
+                <div class="text">Halaman Dashboard</div>
             </div>
-            <div class="nav-links">
-                <a href="?page=pimpinan_form" class="{ 'active' if st.session_state.page == 'pimpinan_form' else '' }">Form Penilaian</a>
-                <a href="?page=pimpinan_exploration" class="{ 'active' if st.session_state.page == 'pimpinan_exploration' else '' }">Dashboard</a>
-            </div>
-            <a class="login-button" href="{login_button_link}">{login_button_text}</a>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+def menu():
+    # **Pastikan Streamlit Session State Sudah Punya `page`**
+    if "page" not in st.session_state:
+        st.session_state["page"] = "Home"
+
+    current_page = st.session_state["page"]
+    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
+
+    # **Login Check**
+    if 'logged_in' in st.session_state and st.session_state['logged_in']:
+        login_button_text = "Logout"
+    else:
+        login_button_text = "Login"
+
+    # **Gunakan Streamlit Columns agar Navbar Sejajar (4 Kolom)**
+    col2, col3, col4 = st.columns([1.5, 1.5, 1])  # 4 Kolom tanpa col1 (logo)
+
+    # **Custom CSS untuk Tombol Navbar yang Spesifik**
+    st.markdown(
+        """
+        <style>
+        /* Tombol di col2 (Prediksi) */
+        div[data-testid="column"]:nth-child(1) button {
+            background-color: #FF5733 !important; /* Warna oranye */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(1) button:hover {
+            background-color: #E64A19 !important; /* Warna oranye lebih gelap saat hover */
+        }
+
+        /* Tombol di col3 (Dashboard) */
+        div[data-testid="column"]:nth-child(2) button {
+            background-color: #33FF57 !important; /* Warna hijau */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(2) button:hover {
+            background-color: #2ECC71 !important; /* Warna hijau lebih gelap saat hover */
+        }
+
+        /* Tombol di col4 (Laporan) */
+        div[data-testid="column"]:nth-child(3) button {
+            background-color: #3357FF !important; /* Warna biru */
+            color: white !important;
+            padding: 10px 20px !important;
+            margin: 5px 0 !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+        div[data-testid="column"]:nth-child(3) button:hover {
+            background-color: #2C3E50 !important; /* Warna biru lebih gelap saat hover */
+        }
+
+        .stButton > button {
+            background-color: #264CBE;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .stButton > button:hover {
+            background-color: #ffffff;
+            color: #264CBE;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Tombol navigasi dengan warna berbeda di col2, col3, col4
+    with col2:
+        if st.button("Form Penilaian", key="nav_prediksi"):
+            st.switch_page("pages/Form_Penilaian.py")  # Pindah ke halaman yang sudah ada
+
+    with col3:
+        if st.button("Dashboard", key="nav_dashboard"):
+            st.switch_page("pages/Dashboard_Pimpinan.py")  # Pindah ke halaman yang sesuai
+
+    with col4:
+        if st.button(login_button_text, key="login_button"):
+            if 'logged_in' in st.session_state and st.session_state['logged_in']:
+                st.session_state['logged_in'] = False  # Logout user
+            else:
+                st.switch_page("pages/login.py")  # Pindah ke halaman login
 
 def connect_to_db():
     try:
@@ -147,13 +208,14 @@ def get_history_prediction():
 
 def show_pimpinan_exploration():
     navbar()
+    menu()
 
     st.markdown("""
         <style>
         .stDownloadButton > button {
             background-color: #264CBE;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 600;
             border: none;
@@ -175,7 +237,7 @@ def show_pimpinan_exploration():
             background-color: #D0EEFF;
             padding: 20px !important;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-radius: 10px;
             margin-top: 50px !important;
         }
@@ -190,10 +252,10 @@ def show_pimpinan_exploration():
 
     st.markdown(
     """
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <h3 style="text-align: center; font-family: 'Poppins', sans-serif;">
-            Dashboard
-        </h3>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <h4 style="text-align: center; font-family: 'Inter', sans-serif;">
+            Silahkan Pilih Data Karyawan yang Ingin Dilihat
+        </h4>
     """, unsafe_allow_html=True
     )
 
@@ -203,18 +265,19 @@ def show_pimpinan_exploration():
         ["Semua Data Karyawan", "Histori Prediksi"]
     )
 
-    col1, col2 = st.columns(2)
-    with col1:
-        filter_employee_id = st.text_input("Filter berdasarkan Karyawan_ID", placeholder="Contoh: EM12345")
-    with col2:
-        filter_departemen = st.selectbox(
-            "Filter berdasarkan Departemen",
-            ["Semua", "Engineering & IT", "Service & Support", "Creative & Design",
-            "Marketing", "Operations", "HR", "Finance & Accounting",
-            "Corporate Strategy & Communications"]
-        )
 
     if menu_option == "Semua Data Karyawan":
+        col1, col2 = st.columns(2)
+        with col1:
+            filter_employee_id = st.text_input("Filter berdasarkan Karyawan_ID", placeholder="Contoh: EM12345")
+        with col2:
+            filter_departemen = st.selectbox(
+                "Filter berdasarkan Departemen",
+                ["Semua", "Engineering & IT", "Service & Support", "Creative & Design",
+                "Marketing", "Operations", "HR", "Finance & Accounting",
+                "Corporate Strategy & Communications"]
+            )
+
         df = get_all_data_with_comments()
 
         if not df.empty:
@@ -242,11 +305,20 @@ def show_pimpinan_exploration():
     elif menu_option == "Histori Prediksi":
         df = get_history_prediction()
 
+        col1, col2 = st.columns(2)
+        with col1:
+            filter_employee_id = st.text_input("Filter berdasarkan Karyawan_ID", placeholder="Contoh: EM12345")
+        with col2:
+            filter_retensi = st.selectbox("Pilih Kategori Retensi/Tidak", ["Semua", "Retensi", "Tidak Retensi"])
+
         if not df.empty:
             # Terapkan filter
             if filter_employee_id:
                 df = df[df['Karyawan_ID'].str.contains(filter_employee_id, na=False)]
 
+            if filter_retensi != "Semua":
+                df = df[df["Hasil_Prediksi_Retensi"] == filter_retensi]
+                
             # Tampilkan data
             st.dataframe(df)
 
