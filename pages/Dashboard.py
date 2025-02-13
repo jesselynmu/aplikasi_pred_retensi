@@ -49,15 +49,17 @@ def navbar():
             margin-left: auto;
         }}
         .stButton > button {{
-            background-color: #264CBE !important;
-            color: white !important;
-            border-radius: 10px !important;
-            font-size: 12px !important;
-            font-weight: bold !important;
-            padding: 10px 15px !important;
-            margin-top:6px !important;
-            border: none !important;
-            cursor: pointer !important;
+            background-color: #264CBE;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 8px;
+            width: 100%;
         }}
         .stButton > button:hover {{
             background-color: #1D3A8A !important;
@@ -75,7 +77,7 @@ def navbar():
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
             <div class="navbar-center">
-                Halaman Dashboard
+                Halaman Prediksi
             </div>
             <div class="navbar-right">
         """, unsafe_allow_html=True)
