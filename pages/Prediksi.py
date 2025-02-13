@@ -13,8 +13,8 @@ import streamlit.components.v1 as components
 import time
 import json
 
-reg_model = pickle.load(open('regression_model.sav', 'rb'))
-class_model = pickle.load(open('clasification_model.sav', 'rb'))
+reg_model = pickle.load(open('regression_model_final.sav', 'rb'))
+class_model = pickle.load(open('clasification_final_model.sav', 'rb'))
 train_file_path = 'X_train.csv'
 
 with open("feature_explanation.json", "r") as f:
@@ -153,56 +153,84 @@ def navbar():
     st.markdown(
         f"""
         <style>
-        .navbar {{
+        .navbar-container {{
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            background-color: #D0EEFF;
+            border-radius: 15px;
             padding: 10px 20px;
-            font-family: 'Inter', sans-serif;
-            margin-top: 20px;
-            background-color: #D0EEFF; /* Background navbar */
-            border-radius: 15px; /* Membulatkan sudut navbar */
+            width: 100%;
         }}
-        .navbar .logo {{
+        .navbar-left {{
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }}
-        .navbar .logo img {{
+        .navbar-left img {{
             height: 40px;
         }}
-        .navbar .text {{
+        .navbar-center {{
+            flex: 1;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            color: #1D567E;
             font-size: 18px;
             font-weight: bold;
-            color: #264CBE;
+        }}
+        .navbar-right {{
+            margin-left: auto;
+        }}
+        .stButton > button {{
+            background-color: #264CBE !important;
+            color: white !important;
+            border-radius: 10px !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+            padding: 10px 15px !important;
+            margin-top:6px !important;
+            border: none !important;
+            cursor: pointer !important;
+        }}
+        .stButton > button:hover {{
+            background-color: #1D3A8A !important;
         }}
         </style>
-        <div class="navbar">
-            <div class="logo">
+
+        """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([10, 1])
+
+    with col1:
+        st.markdown(f"""
+        <div class="navbar-container">
+            <div class="navbar-left">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
-                <div class="text">Halaman Prediksi Karyawan</div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            <div class="navbar-center">
+                Halaman Prediksi
+            </div>
+            <div class="navbar-right">
+        """, unsafe_allow_html=True)
+
+    with col2:
+        if st.button("Logout" if st.session_state.get('logged_in', False) else "Logout", key="login_button"):
+            if st.session_state.get('logged_in', False):
+                st.session_state['logged_in'] = False
+                st.query_params["logged_out"] = "true"  # Tandai bahwa logout baru saja terjadi
+                st.rerun()
+            else:
+                st.switch_page("pages/login.py")
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
 
 def menu():
-    # **Pastikan Streamlit Session State Sudah Punya `page`**
     if "page" not in st.session_state:
         st.session_state["page"] = "Home"
 
-    current_page = st.session_state["page"]
-    logo_path = os.path.join(os.path.dirname(__file__), "../asset/logo.png")
-
-    # **Login Check**
-    if 'logged_in' in st.session_state and st.session_state['logged_in']:
-        login_button_text = "Logout"
-    else:
-        login_button_text = "Login"
-
-    # **Gunakan Streamlit Columns agar Navbar Sejajar (4 Kolom)**
-    col2, col3, col4, col5 = st.columns([1.5, 1.5, 1.5, 1])  # 4 Kolom tanpa col1 (logo)
+    # **Gunakan Streamlit Columns agar Navbar Sejajar (3 Kolom)**
+    col2, col3, col4 = st.columns([1.5, 1.5, 1.5])  # 3 Kolom (Tanpa col5)
 
     # **Custom CSS untuk Tombol Navbar yang Spesifik**
     st.markdown(
@@ -266,13 +294,6 @@ def menu():
     with col4:
         if st.button("Laporan", key="nav_laporan"):
             st.switch_page("pages/Laporan.py")  # Pindah ke halaman laporan
-
-    with col5:
-        if st.button(login_button_text, key="login_button"):
-            if 'logged_in' in st.session_state and st.session_state['logged_in']:
-                st.session_state['logged_in'] = False  # Logout user
-            else:
-                st.switch_page("pages/login.py")  # Pindah ke halaman login
 
 
 def save_prediction_to_db(employee_id, hasil_prediksi_klasifikasi, probabilitas_pred_klasifikasi, hasil_prediksi_regresi):

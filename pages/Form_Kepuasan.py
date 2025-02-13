@@ -15,39 +15,76 @@ def navbar():
     st.markdown(
         f"""
         <style>
-        .navbar {{
+        .navbar-container {{
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            background-color: #D0EEFF;
+            border-radius: 15px;
             padding: 10px 20px;
-            font-family: 'Inter', sans-serif;
-            margin-top: 20px;
-            background-color: #D0EEFF; /* Background navbar */
-            border-radius: 15px; /* Membulatkan sudut navbar */
+            width: 100%;
         }}
-        .navbar .logo {{
+        .navbar-left {{
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }}
-        .navbar .logo img {{
+        .navbar-left img {{
             height: 40px;
         }}
-        .navbar .text {{
+        .navbar-center {{
+            flex: 1;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            color: #1D567E;
             font-size: 18px;
             font-weight: bold;
-            color: #264CBE;
+        }}
+        .navbar-right {{
+            margin-left: auto;
+        }}
+        .stButton > button {{
+            background-color: #264CBE !important;
+            color: white !important;
+            border-radius: 10px !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+            padding: 10px 15px !important;
+            margin-top:6px !important;
+            border: none !important;
+            cursor: pointer !important;
+        }}
+        .stButton > button:hover {{
+            background-color: #1D3A8A !important;
         }}
         </style>
-        <div class="navbar">
-            <div class="logo">
+
+        """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([10, 1])
+
+    with col1:
+        st.markdown(f"""
+        <div class="navbar-container">
+            <div class="navbar-left">
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
-                <div class="text">Form Kepuasan Kerja</div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            <div class="navbar-center">
+                Form Kepuasan Kerja
+            </div>
+            <div class="navbar-right">
+        """, unsafe_allow_html=True)
+
+    with col2:
+        if st.button("Logout" if st.session_state.get('logged_in', False) else "Logout", key="login_button"):
+            if st.session_state.get('logged_in', False):
+                st.session_state['logged_in'] = False
+                st.query_params["logged_out"] = "true"  # Tandai bahwa logout baru saja terjadi
+                st.rerun()
+            else:
+                st.switch_page("pages/login.py")
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 def menu():
     # **Pastikan Streamlit Session State Sudah Punya `page`**
@@ -61,10 +98,10 @@ def menu():
     if 'logged_in' in st.session_state and st.session_state['logged_in']:
         login_button_text = "Logout"
     else:
-        login_button_text = "Login"
+        login_button_text = "Logout"
 
     # **Gunakan Streamlit Columns agar Navbar Sejajar (4 Kolom)**
-    col2, col3, col4 = st.columns([1.5, 1.5, 1])  # 4 Kolom tanpa col1 (logo)
+    col2, col3 = st.columns([1.5, 1.5])  # 4 Kolom tanpa col1 (logo)
 
     # **Custom CSS untuk Tombol Navbar yang Spesifik**
     st.markdown(
@@ -144,12 +181,6 @@ def menu():
         if st.button("Form Keluhan", key="nav_dashboard"):
             st.switch_page("pages/Form_Keluhan.py")  # Pindah ke halaman yang sesuai
 
-    with col4:
-        if st.button(login_button_text, key="login_button"):
-            if 'logged_in' in st.session_state and st.session_state['logged_in']:
-                st.session_state['logged_in'] = False  # Logout user
-            else:
-                st.switch_page("pages/login.py")  # Pindah ke halaman login
 
 def connect_to_db():
     try:

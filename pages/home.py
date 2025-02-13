@@ -190,6 +190,15 @@ def show_home():
             font-size: 14px;
             color: #333333;
         }
+
+        .source {
+                    font-style: italic; /* Italic */
+                    font-weight: 300; /* Light font */
+                    font-size: 12px; /* Ukuran lebih kecil */
+                    color: #666; /* Warna abu-abu agar lebih soft */
+                    margin-top: 5px;
+                    text-align: center; /* Agar sejajar dengan gambar */
+                }
         </style>
         """,
         unsafe_allow_html=True
@@ -209,6 +218,7 @@ def show_home():
             </div>
             <div class="image-content">
                 <img src="data:image/png;base64,{get_image_as_base64(image_path)}" alt="Gambar Retensi Karyawan">
+                <p class="source">Sumber: freepik.com</p>
             </div>
         </div>
         """,
