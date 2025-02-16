@@ -51,7 +51,9 @@ def get_shap_top_features():
     conn = connect_to_db()
     if conn:
         try:
-            query = "SELECT employee_id as ID_Karyawan, shap_values FROM shap_pred_result"
+            query = """SELECT a.employee_id as ID_Karyawan, a.shap_values, b.hasil_prediksi_klasifikasi as Hasil_Prediksi_Retensi, 
+            b.hasil_prediksi_regresi as Hasil_Prediksi_Lama_Kerja
+            FROM shap_pred_result a inner join history_prediction b on a.employee_id = b.employee_id"""
             df = pd.read_sql(query, conn)
 
             # Ekstraksi dan format ulang shap_values
@@ -75,7 +77,9 @@ def get_shap_top_features():
 
                 # Buat format tabel baru
                 formatted_row = {
-                    "ID_Karyawan": employee_id
+                    "ID_Karyawan": employee_id,
+                    "Hasil_Prediksi_Retensi": row["Hasil_Prediksi_Retensi"],  # Tambahkan ini!
+                    "Hasil_Prediksi_Lama_Kerja": row["Hasil_Prediksi_Lama_Kerja"],  # Tambahkan ini!
                 }
                 for i, (feature, value) in enumerate(top_features, start=1):
                     formatted_row[f"Nama_Fitur_{i}"] = feature
@@ -355,7 +359,7 @@ def show_report():
 
         # Ambil data dari tabel shap_pred_result
         df = get_shap_top_features()
-
+        
         filter_retensi = st.selectbox("Pilih Kategori Retensi/Tidak", ["Semua", "Retensi", "Tidak Retensi"])
 
         if filter_retensi != "Semua":

@@ -112,7 +112,7 @@ def navbar():
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 6px !important;
             width: 100%;
         }}
         .stButton > button:hover {{
@@ -131,7 +131,7 @@ def navbar():
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
             <div class="navbar-center">
-                Halaman Prediksi
+                Form Keluhan
             </div>
             <div class="navbar-right">
         """, unsafe_allow_html=True)
@@ -208,25 +208,6 @@ def menu():
         }
         div[data-testid="column"]:nth-child(3) button:hover {
             background-color: #2C3E50 !important; /* Warna biru lebih gelap saat hover */
-        }
-
-        .stButton > button {
-            background-color: #264CBE;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .stButton > button:hover {
-            background-color: #ffffff;
-            color: #264CBE;
         }
         </style>
         """,
