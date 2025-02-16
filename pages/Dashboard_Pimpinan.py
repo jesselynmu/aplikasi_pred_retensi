@@ -150,25 +150,6 @@ def menu():
         div[data-testid="column"]:nth-child(3) button:hover {
             background-color: #2C3E50 !important; /* Warna biru lebih gelap saat hover */
         }
-
-        .stButton > button {
-            background-color: #264CBE;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .stButton > button:hover {
-            background-color: #ffffff;
-            color: #264CBE;
-        }
         </style>
         """,
         unsafe_allow_html=True
