@@ -77,7 +77,7 @@ def navbar():
                 <img src="data:image/png;base64,{get_image_as_base64(logo_path)}" alt="Logo">
             </div>
             <div class="navbar-center">
-                Halaman Prediksi
+                Halaman Dashboard
             </div>
             <div class="navbar-right">
         """, unsafe_allow_html=True)
