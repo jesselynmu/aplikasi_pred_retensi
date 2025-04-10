@@ -282,7 +282,7 @@ def show_pimpinan_exploration():
     if menu_option == "Semua Data Karyawan":
         col1, col2 = st.columns(2)
         with col1:
-            filter_employee_id = st.text_input("Filter berdasarkan Karyawan_ID", placeholder="Contoh: EM12345")
+            filter_employee_id = st.text_input("Filter berdasarkan ID_Karyawan", placeholder="Contoh: EM12345")
         with col2:
             filter_departemen = st.selectbox(
                 "Filter berdasarkan Departemen",
@@ -296,7 +296,7 @@ def show_pimpinan_exploration():
         if not df.empty:
             # Terapkan filter
             if filter_employee_id:
-                df = df[df['Karyawan_ID'].str.contains(filter_employee_id, na=False)]
+                df = df[df['ID_Karyawan'].str.contains(filter_employee_id, na=False)]
 
             if filter_departemen != "Semua":
                 df = df[df['Departemen'] == filter_departemen]
@@ -320,14 +320,14 @@ def show_pimpinan_exploration():
 
         col1, col2 = st.columns(2)
         with col1:
-            filter_employee_id = st.text_input("Filter berdasarkan Karyawan_ID", placeholder="Contoh: EM12345")
+            filter_employee_id = st.text_input("Filter berdasarkan ID_Karyawan", placeholder="Contoh: EM12345")
         with col2:
             filter_retensi = st.selectbox("Pilih Kategori Retensi/Tidak", ["Semua", "Retensi", "Tidak Retensi"])
 
         if not df.empty:
             # Terapkan filter
             if filter_employee_id:
-                df = df[df['Karyawan_ID'].str.contains(filter_employee_id, na=False)]
+                df = df[df['ID_Karyawan'].str.contains(filter_employee_id, na=False)]
 
             if filter_retensi != "Semua":
                 df = df[df["Hasil_Prediksi_Retensi"] == filter_retensi]

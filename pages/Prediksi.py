@@ -14,7 +14,7 @@ import time
 import json
 
 reg_model = pickle.load(open('regression_model_final.sav', 'rb'))
-class_model = pickle.load(open('clasification_final_model.sav', 'rb'))
+class_model = pickle.load(open('clasification_final_model_smote.sav', 'rb'))
 train_file_path = 'X_train.csv'
 
 with open("feature_explanation.json", "r") as f:
@@ -78,7 +78,6 @@ def process_employee_data(df):
     df["income_6_months"] = df["income"] * 6
     df["total_income_work"] = df["income"] * df["active_work_months"]
 
-    df["absence_ratio"] = df["absent_90D"] / (df["active_work"] / 90)
     df["income_dependant_ratio"] = df["income"] / (df["dependant"] + 1)
     df["work_efficiency"] = df["avg_time_work"] / 8
 
@@ -95,15 +94,6 @@ def process_employee_data(df):
     # Work Stability Score
     df['work_stability_score'] = df['active_work_months'] / (df['absent_90D'] + 1)
 
-    # Married-Dependent Ratio
-    def married_dependent_ratio(row):
-        if row['marriage_stat'] == 'Married':
-            return row['dependant'] + 1
-        else:
-            return 1
-
-    df['married_dependent_ratio'] = df.apply(married_dependent_ratio, axis=1)
-
     # Job Income to Position Score
     position_score_mapping = {'Junior': 2, 'Staff': 1, 'Senior': 3, 'Manager': 4}
     df['position_score'] = df['position'].map(position_score_mapping)
@@ -118,20 +108,6 @@ def process_employee_data(df):
     df['weighted_satisfaction_performance'] = (
         0.6 * df['job_satisfaction'] + 0.4 * df['performance_rating']
     )
-
-    # Resign Risk Indicator
-    def resign_risk_indicator(row):
-        if row['age_years'] < 30 and row['active_work_months'] < 12:
-            return "High"
-        elif 1 <= row['active_work_months'] <= 36:
-            return "Medium"
-        else:
-            return "Low"
-
-    df['resign_risk_indicator'] = df.apply(resign_risk_indicator, axis=1)
-
-    # Adjusted Work Time
-    df['adjusted_work_time'] = df['avg_time_work'] * (1 - (df['absent_90D'] / ((df['active_work_months'] * 90) + 1)))
 
     job_satisfaction_mapping = {1.0: 'Low', 2.0: 'Medium', 3.0: 'High', 4.0: 'Very High'}
     df['job_satisfaction'] = df['job_satisfaction'].map(job_satisfaction_mapping)
@@ -407,7 +383,7 @@ def show_prediction():
 
         # Kolom kategori
         cat_feature = ['departemen', 'position', 'domisili', 'marriage_stat', 'job_satisfaction', 
-                       'performance_rating', 'education', 'active_work_category', 'resign_risk_indicator', 'jenis_kelamin']
+                       'performance_rating', 'education', 'active_work_category', 'jenis_kelamin']
 
         X_test_class = df[expected_columns_class]
         X_test_reg = df[expected_columns_reg]
