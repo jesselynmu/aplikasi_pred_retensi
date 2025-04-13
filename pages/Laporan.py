@@ -376,6 +376,8 @@ def show_report():
             # Tampilkan data dalam bentuk tabel
             st.dataframe(df)
 
+            st.caption("Keterangan: Geser ke kanan untuk melihat keseluruhan data")
+
             # Konversi DataFrame ke CSV untuk di-download
             csv = df.to_csv(index=False)
             st.download_button(

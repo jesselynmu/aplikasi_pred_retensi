@@ -305,12 +305,14 @@ def show_exploration():
             filter_employee_id = st.text_input("Filter berdasarkan ID Karyawan", placeholder="Contoh: EM12345")
 
         with col2:
-            filter_join_date = st.date_input("Filter berdasarkan Tanggal Masuk", value=None)
+            filter_join_date = st.date_input("Filter berdasarkan Tanggal Masuk Dimulai Dari", value=None)
 
         df = get_all_employee_data(filter_employee_id, filter_join_date)
 
         if not df.empty:
             st.dataframe(df)
+            st.caption("Keterangan: Geser ke kanan untuk melihat keseluruhan data")
+            
             csv = df.to_csv(index=False)
             st.download_button(
                 label="Download Data sebagai CSV",

@@ -304,6 +304,8 @@ def show_pimpinan_exploration():
             # Tampilkan data
             st.dataframe(df)
 
+            st.caption("Keterangan: Geser ke kanan untuk melihat keseluruhan data")
+
             # Tombol untuk download CSV
             csv = df.to_csv(index=False)
             st.download_button(
