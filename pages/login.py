@@ -58,6 +58,7 @@ def navbar():
         border-radius: 15px;
         padding: 10px 20px;
         width: 100%;
+        margin-top: 20px;
     }
     .navbar-left {
         display: flex;
